@@ -32,9 +32,9 @@ public:
 
   struct calc_percent_result {
     // vertical percent
-    long double percent_CA;
+    double percent_CA;
     // horizontal percent
-    long double percent_CB;
+    double percent_CB;
   };
 
   struct vec_side_components_result {
@@ -105,7 +105,7 @@ public:
 private:
   /**
    * @returns triangle area */
-  long double area() const;
+  double area() const;
 };
 
 #endif

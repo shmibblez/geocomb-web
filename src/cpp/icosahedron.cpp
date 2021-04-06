@@ -33,16 +33,16 @@ std::string Icosahedron::rotation_method_key(ico::rotation_method rm) {
  * @returns vector of icosahedron triangles
  */
 std::vector<Triangle> Icosahedron::triangles() {
-  const long double gr = constants::golden_ratio;
-  const long double r = constants::radius;
-  const long double factor = r / sqrt(gr * gr + 1.0);
+  const double gr = constants::golden_ratio;
+  const double r = constants::radius;
+  const double factor = r / sqrt(gr * gr + 1.0);
 
-  const long double &_1 = factor;
-  const long double _gr = gr * factor;
+  const double &_1 = factor;
+  const double _gr = gr * factor;
 
   // rotate all base points so north pole aligns with z axis (this is angle
   // between vectors)
-  const long double rads = -acos(gr / sqrt(1.0 + gr * gr));
+  const double rads = -acos(gr / sqrt(1.0 + gr * gr));
   /**
    *     how points are numbered
    *        N       N       N       N       N           - all top pent tris
@@ -187,7 +187,7 @@ Triangle Icosahedron::triangle(const int indx) {
   return Icosahedron::triangles()[indx];
 }
 
-Point3 Icosahedron::point_from_coords(long double lat, long double lon) const {
+Point3 Icosahedron::point_from_coords(double lat, double lon) const {
   if (!(lat <= 90 && lat >= -90)) {
     throw std::invalid_argument("lat must be between -90 and 90");
   }
@@ -196,10 +196,10 @@ Point3 Icosahedron::point_from_coords(long double lat, long double lon) const {
   }
   lat = hexmapf::deg_2_rad(lat);
   lon = hexmapf::deg_2_rad(lon);
-  const long double r = constants::radius;
-  const long double x = r * cos(lat) * cos(lon);
-  const long double y = r * cos(lat) * sin(lon);
-  const long double z = r * sin(lat);
+  const double r = constants::radius;
+  const double x = r * cos(lat) * cos(lon);
+  const double y = r * cos(lat) * sin(lon);
+  const double z = r * sin(lat);
   return Point3(x, y, z);
 }
 
@@ -516,8 +516,8 @@ Phex Icosahedron::not_lazy_containing_phex(Point3 p, int res) const {
   const std::vector<Phex> phexes = Phex::all_phexes(all_points);
 
   std::unique_ptr<Phex> closest_phex;
-  long double dist;
-  long double smallest_dist = constants::radius * 2;
+  double dist;
+  double smallest_dist = constants::radius * 2;
   for (Phex phex : phexes) {
     dist = p.distance(phex.center);
     if (dist < smallest_dist) {
@@ -548,9 +548,9 @@ EMSCRIPTEN_BINDINGS(icosahedron) {
       .value("quaternion", ico::rotation_method::quaternion);
 
   emscripten::class_<Point3>("Point3")
-      .constructor<long double, long double, long double, bool, int>();
+      .constructor<double, double, double, bool, int>();
 
   emscripten::class_<GPoint3>("GPoint3")
-      .constructor<long double, long double, long double, int, int, int,
+      .constructor<double, double, double, int, int, int,
                    ico::map_orientation, ico::rotation_method, bool, int>();
 }

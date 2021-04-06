@@ -21,14 +21,14 @@ Triangle::vec_side_components(const Triangle &tri, const Point3 &i) {
   Point3 CI = i;
   CI.subtract(tri.C);
 
-  const long double beta = u_CA.angle_between(CI);
-  const long double alpha = CI.angle_between(u_CB);
-  const long double phi = constants::PI - beta - alpha;
+  const double beta = u_CA.angle_between(CI);
+  const double alpha = CI.angle_between(u_CB);
+  const double phi = constants::PI - beta - alpha;
 
   // law of sines to find missing magnitudes & lengths
-  const long double mag_CI = CI.mag();
-  const long double mag_CB = (mag_CI * sin(beta)) / sin(phi);
-  const long double mag_CA = (mag_CI * sin(alpha)) / sin(phi);
+  const double mag_CI = CI.mag();
+  const double mag_CB = (mag_CI * sin(beta)) / sin(phi);
+  const double mag_CA = (mag_CI * sin(alpha)) / sin(phi);
 
   Point3 vec_CA = u_CA;
   vec_CA.mult_by(mag_CA);
@@ -39,9 +39,9 @@ Triangle::vec_side_components(const Triangle &tri, const Point3 &i) {
 
 Triangle::calc_percent_result
 Triangle::calc_percent_gnomonic(const Point3 &p) const {
-  // int precision = std::numeric_limits<long double>::max_digits10;
+  // int precision = std::numeric_limits<double>::max_digits10;
 
-  const long double r = constants::radius;
+  const double r = constants::radius;
   Point3 original_AB = this->B;
   original_AB.subtract(this->A);
 
@@ -56,9 +56,9 @@ Triangle::calc_percent_gnomonic(const Point3 &p) const {
   cent.unit();
   cent.mult_by(r);
 
-  const long double alpha = this->C.angle_between(cent);
-  const long double mag_cent = cent.mag();
-  const long double mag_h = mag_cent / cos(alpha);
+  const double alpha = this->C.angle_between(cent);
+  const double mag_cent = cent.mag();
+  const double mag_h = mag_cent / cos(alpha);
   Point3 A = this->A;
   A.unit();
   A.mult_by(mag_h);
@@ -78,11 +78,11 @@ Triangle::calc_percent_gnomonic(const Point3 &p) const {
   Triangle::vec_side_components_result components =
       Triangle::vec_side_components(projected_tri, projected_p);
 
-  const long double mag_comp_CA = components.vec_CA.mag();
-  const long double mag_comp_CB = components.vec_CB.mag();
+  const double mag_comp_CA = components.vec_CA.mag();
+  const double mag_comp_CB = components.vec_CB.mag();
   Point3 mag_temp = B;
   mag_temp.subtract(A);
-  const long double mag = mag_temp.mag();
+  const double mag = mag_temp.mag();
 
   return {.percent_CA = mag_comp_CA / mag, .percent_CB = mag_comp_CB / mag};
 }
@@ -249,23 +249,23 @@ bool Triangle::contains_point(Point3 &point) const {
     return false;
   }
   // calc tri area
-  const long double tri_area = this->area();
+  const double tri_area = this->area();
   // if any sub tri area is bigger than thisArea it means point outside of
   // triangle
-  const long double pAB_area = Triangle(this->A, this->B, intersection).area();
+  const double pAB_area = Triangle(this->A, this->B, intersection).area();
   if (pAB_area > tri_area + 0.01) {
     return false;
   }
-  const long double pBC_area = Triangle(intersection, this->B, this->C).area();
+  const double pBC_area = Triangle(intersection, this->B, this->C).area();
   if (pBC_area > tri_area + 0.01) {
     return false;
   }
-  const long double pCA_area = Triangle(this->A, intersection, this->C).area();
+  const double pCA_area = Triangle(this->A, intersection, this->C).area();
   if (pCA_area > tri_area + 0.01) {
     return false;
   }
   // round and check if equal enough
-  const long double combined_area = pAB_area + pBC_area + pCA_area;
+  const double combined_area = pAB_area + pBC_area + pCA_area;
   const int equal_nuff = hexmapf::equal_enough(tri_area, combined_area);
 
   return equal_nuff;
@@ -273,28 +273,28 @@ bool Triangle::contains_point(Point3 &point) const {
 
 Point3 Triangle::plane_intersection(Point3 vec) const {
   // x component
-  const long double l = (this->A.y - this->B.y) * (this->C.z - this->B.z) -
+  const double l = (this->A.y - this->B.y) * (this->C.z - this->B.z) -
                         (this->A.z - this->B.z) * (this->C.y - this->B.y);
   // y component
-  const long double m = (this->A.z - this->B.z) * (this->C.x - this->B.x) -
+  const double m = (this->A.z - this->B.z) * (this->C.x - this->B.x) -
                         (this->A.x - this->B.x) * (this->C.z - this->B.z);
   // z component
-  const long double n = (this->A.x - this->B.x) * (this->C.y - this->B.y) -
+  const double n = (this->A.x - this->B.x) * (this->C.y - this->B.y) -
                         (this->C.x - this->B.x) * (this->A.y - this->B.y);
   // finds v - variable used to find point along vector from origin to p on
   // plane
-  const long double v_numer = l * this->A.x + m * this->A.y + n * this->A.z;
-  const long double v_denom = l * vec.x + m * vec.y + n * vec.z;
-  const long double v = v_numer / v_denom;
+  const double v_numer = l * this->A.x + m * this->A.y + n * this->A.z;
+  const double v_denom = l * vec.x + m * vec.y + n * vec.z;
+  const double v = v_numer / v_denom;
   // parametric equation for line along vec (from origin)
   // t_ is for temp
-  const long double t_x = vec.x * v;
-  const long double t_y = vec.y * v;
-  const long double t_z = vec.z * v;
+  const double t_x = vec.x * v;
+  const double t_y = vec.y * v;
+  const double t_z = vec.z * v;
   return Point3(t_x, t_y, t_z);
 };
 
-long double Triangle::area() const {
+double Triangle::area() const {
   Point3 AB = this->B;
   AB.subtract(this->A);
   Point3 BC = this->C;
@@ -302,7 +302,7 @@ long double Triangle::area() const {
   Point3 temp = AB;
   temp.cross(BC);
 
-  const long double mag = temp.mag();
+  const double mag = temp.mag();
 
   return mag / 2.0;
 }

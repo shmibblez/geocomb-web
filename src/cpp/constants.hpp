@@ -10,11 +10,11 @@ namespace constants {
 // for generating points around another point
 inline int lazy_range = 2;
 // earth's radius
-inline long double radius = 250.0;
+inline double radius = 250.0;
 // golden ratio
-inline long double golden_ratio = 1.618033988749894848205;
+inline double golden_ratio = 1.618033988749894848205;
 // pi
-inline long double PI = 3.141592653589793238463;
+inline double PI = 3.141592653589793238463;
 }; // namespace constants
 
 // hexmap functions
@@ -23,7 +23,7 @@ namespace hexmapf {
 // calculates number of divisions from resolution, always res * 3
 inline int num_divisions(int resolution) { return resolution * 3; };
 // round 2 nums and check if equal enough
-inline bool equal_enough(long double n1, long double n2, int places = 6) {
+inline bool equal_enough(double n1, double n2, int places = 6) {
   int mult = pow(10, places);
   long left = round(n1 * mult);
   long right = round(n2 * mult);
@@ -39,7 +39,7 @@ inline int round_up(const int num, const int mult) {
   return (trunc(num / mult) + 1) * mult;
 }
 // convert from deg to rad
-inline long double deg_2_rad(long double deg) {
+inline double deg_2_rad(double deg) {
   return deg * (constants::PI / 180.0);
 };
 // gets closest even number by subtracting 1 if odd

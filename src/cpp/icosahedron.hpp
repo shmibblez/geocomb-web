@@ -60,7 +60,7 @@ public:
    * generate point from coordinates (degrees)
    * @param lat latitude
    * @param lon longitude */
-  Point3 point_from_coords(long double lat, long double lon) const;
+  Point3 point_from_coords(double lat, double lon) const;
 
   /**
    * @param p point to generate hash for
