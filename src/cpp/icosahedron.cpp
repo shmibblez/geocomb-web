@@ -539,6 +539,13 @@ EMSCRIPTEN_BINDINGS(icosahedron) {
       .function("hash", &Icosahedron::hash)
       .function("parseHash", &Icosahedron::parse_hash);
 
+  emscripten::value_object<Icosahedron::hash_properties>("HashProperties")
+      .field("mo", &Icosahedron::hash_properties::mo)
+      .field("rm", &Icosahedron::hash_properties::rm)
+      .field("res", &Icosahedron::hash_properties::res)
+      .field("row", &Icosahedron::hash_properties::row)
+      .field("col", &Icosahedron::hash_properties::col);
+
   emscripten::enum_<ico::map_orientation>("MapOrientation")
       .value("ECEF", ico::map_orientation::ECEF)
       .value("dymaxion", ico::map_orientation::dymaxion);
@@ -548,9 +555,24 @@ EMSCRIPTEN_BINDINGS(icosahedron) {
       .value("quaternion", ico::rotation_method::quaternion);
 
   emscripten::class_<Point3>("Point3")
-      .constructor<double, double, double, bool, int>();
+      .constructor<double, double, double, bool, int>()
+      .property("x", &Point3::x)
+      .property("y", &Point3::y)
+      .property("z", &Point3::z)
+      .property("tri_num", &Point3::tri_num)
+      .property("is_pc", &Point3::is_pc);
 
   emscripten::class_<GPoint3>("GPoint3")
-      .constructor<double, double, double, int, int, int,
-                   ico::map_orientation, ico::rotation_method, bool, int>();
+      .constructor<double, double, double, int, int, int, ico::map_orientation,
+                   ico::rotation_method, bool, int>()
+      .property("x", &GPoint3::get_x)
+      .property("y", &GPoint3::get_y)
+      .property("z", &GPoint3::get_z)
+      .property("tri_num", &GPoint3::get_tri_num)
+      .property("is_pc", &GPoint3::get_is_pc)
+      .property("res", &GPoint3::res)
+      .property("row", &GPoint3::row)
+      .property("col", &GPoint3::col)
+      .property("mo", &GPoint3::mo)
+      .property("rm", &GPoint3::rm);
 }

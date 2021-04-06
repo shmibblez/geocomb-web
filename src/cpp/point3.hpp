@@ -26,8 +26,7 @@ public:
   // whether point is phex center (and politically correct)
   bool is_pc;
   // point double
-  Point3(double x, double y, double z, bool is_pc = false,
-         int tri_num = -1);
+  Point3(double x, double y, double z, bool is_pc = false, int tri_num = -1);
   ~Point3();
 
   struct lazy_side_points_result {
@@ -289,9 +288,15 @@ public:
   int col;
   ico::map_orientation mo;
   ico::rotation_method rm;
-  GPoint3(double x, double y, double z, int res, int row,
-          int col, ico::map_orientation mo, ico::rotation_method rm,
-          bool is_pc = false, int tri_num = -1);
+  GPoint3(double x, double y, double z, int res, int row, int col,
+          ico::map_orientation mo, ico::rotation_method rm, bool is_pc = false,
+          int tri_num = -1);
+
+  inline double get_x() const { return x; };
+  inline double get_y() const { return y; };
+  inline double get_z() const { return z; };
+  inline int get_tri_num() const { return tri_num; };
+  inline bool get_is_pc() const { return is_pc; };
 
   /**
    * default, creates invalid point
