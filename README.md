@@ -13,7 +13,7 @@ This means that geocomb can be used to store locations with hexagons, instead of
 
 Aside from this, `emscripten` is awesome, it allows easy binding of c++ code to javascript, and geocomb-web probably wouldn't exist without it. If you're planning on using it make sure to read the docs...let's just say it was a long day
 
-## install
+# install
 
 `npm install geocomb-web --save`
 
