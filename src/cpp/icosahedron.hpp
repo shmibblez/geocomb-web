@@ -3,8 +3,6 @@
 #ifndef ICOSAHEDRON_HPP
 #define ICOSAHEDRON_HPP
 
-#include <emscripten/bind.h>
-
 #include "enums.hpp"
 #include "point3.hpp"
 #include "triangle.hpp"
@@ -55,6 +53,11 @@ public:
    * @returns icosahedron triangle at [indx]
    **/
   static Triangle triangle(const int indx);
+
+  /**
+   * @returns randomly generated point
+   **/
+  Point3 random_point() const;
 
   /**
    * generate point from coordinates (degrees)

@@ -25,7 +25,7 @@ public:
   int tri_num;
   // whether point is phex center (and politically correct)
   bool is_pc;
-  // point double
+  // point long double
   Point3(double x, double y, double z, bool is_pc = false, int tri_num = -1);
   ~Point3();
 
@@ -43,15 +43,15 @@ public:
   /**
    * @returns point's radous
    **/
-  double get_radius();
+  long double get_radius();
   /**
    * @returns point's latitude
    **/
-  double get_lat();
+  long double get_lat();
   /**
    * @returns point's longitude
    **/
-  double get_lon();
+  long double get_lon();
 
   /**
    * VECTOR ARITHMETIC, NOTHING TOO SPECIAL HERE
@@ -60,15 +60,15 @@ public:
 
   /**
    * angle between vectors (origin, this) and (origin, p) */
-  double angle_between(const Point3 &p) const;
+  long double angle_between(const Point3 &p) const;
   /**
    * @param around vec to rotate around -> vec is from origin to point
    * @param rad rads to rotate
    * @note modifies obj */
-  void rotate(const Point3 &around, const double &rad);
+  void rotate(const Point3 &around, const long double &rad);
   /**
    * magnitude from origin to point */
-  double mag() const;
+  long double mag() const;
   /**
    * add another vector
    * !-> modifies obj */
@@ -79,7 +79,7 @@ public:
   void subtract(const Point3 &p);
   /**
    * dot product */
-  double dot(const Point3 &p) const;
+  long double dot(const Point3 &p) const;
   /**
    * cross product
    * !-> modifies obj */
@@ -91,14 +91,14 @@ public:
   /**
    * multiply by scalar
    * !-> modifies obj */
-  void mult_by(const double num);
+  void mult_by(const long double num);
   /**
    * divide by scalar
    * !-> modifies obj */
-  void div_by(const double num);
+  void div_by(const long double num);
   /**
    * distance between vectors */
-  double distance(const Point3 &p) const;
+  long double distance(const Point3 &p) const;
   /**
    * move point to be on sphere (multiply unit vec by radius) */
   void spheriphy();
@@ -123,7 +123,7 @@ public:
   /**
    * rotates point around y axis !-> modifies obj
    * @param rads how many radians to rotate point */
-  void rotate_around_y(double rads);
+  void rotate_around_y(long double rads);
 
   /**
    * GNOMONIC POINT GENERATION
@@ -292,16 +292,26 @@ public:
           ico::map_orientation mo, ico::rotation_method rm, bool is_pc = false,
           int tri_num = -1);
 
+  /**
+   * default, creates invalid point
+   **/
+  GPoint3();
+
+  /**
+   * emscripten GPoint3 getters below
+   *
+   * careful when updating other stuff
+   */
   inline double get_x() const { return x; };
   inline double get_y() const { return y; };
   inline double get_z() const { return z; };
   inline int get_tri_num() const { return tri_num; };
   inline bool get_is_pc() const { return is_pc; };
-
   /**
-   * default, creates invalid point
-   **/
-  GPoint3();
+   * emscripten GPoint3 getters above
+   *
+   * careful when updating other stuff
+   */
 
   /**
    * checks if point is phex center
@@ -316,21 +326,21 @@ public:
    * generate point from coordinates
    * @param lat latitude in degrees
    * @param lon longitude in degrees */
-  static GPoint3 from_coordinates(double lat, double lon);
+  static GPoint3 from_coordinates(long double lat, long double lon);
 };
 
 class Quaternion : public Point3 {
 
 public:
-  double w;
-  Quaternion(double x, double y, double z, double w);
+  long double w;
+  Quaternion(long double x, long double y, long double z, long double w);
 
   /**
    * convert to unit quaternion */
   void unit();
   /**
    * get quaternion magnitude */
-  double mag();
+  long double mag();
   /**
    * multiply with another quaternion
    * @note modifies obj */

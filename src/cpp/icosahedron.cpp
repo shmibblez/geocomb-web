@@ -1,11 +1,10 @@
-// #include <bind.h>
-#include <emscripten/bind.h>
-
 #include "icosahedron.hpp"
 #include "phex.hpp"
 #include "point3.hpp"
 #include "triangle.hpp"
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 #include <functional>
 #include <string>
 
@@ -13,12 +12,9 @@ using std::cos;
 using std::sin;
 using std::trunc;
 
-// orientation and rotation are ints since don't think you can bind enums with
-// emscripten
 Icosahedron::Icosahedron(ico::map_orientation orientation,
                          ico::rotation_method rotation)
-    : tris(Icosahedron::triangles()), mo(ico::map_orientation::ECEF),
-      rm(ico::rotation_method::gnomonic) {}
+    : tris(Icosahedron::triangles()), mo(orientation), rm(rotation) {}
 
 std::string Icosahedron::map_orientation_key(ico::map_orientation mo) {
   return std::vector<std::string>({"e", "d"})[mo];
@@ -33,16 +29,16 @@ std::string Icosahedron::rotation_method_key(ico::rotation_method rm) {
  * @returns vector of icosahedron triangles
  */
 std::vector<Triangle> Icosahedron::triangles() {
-  const double gr = constants::golden_ratio;
-  const double r = constants::radius;
-  const double factor = r / sqrt(gr * gr + 1.0);
+  const long double gr = constants::golden_ratio;
+  const long double r = constants::radius;
+  const long double factor = r / sqrt(gr * gr + 1.0);
 
-  const double &_1 = factor;
-  const double _gr = gr * factor;
+  const long double &_1 = factor;
+  const long double _gr = gr * factor;
 
   // rotate all base points so north pole aligns with z axis (this is angle
   // between vectors)
-  const double rads = -acos(gr / sqrt(1.0 + gr * gr));
+  const long double rads = -acos(gr / sqrt(1.0 + gr * gr));
   /**
    *     how points are numbered
    *        N       N       N       N       N           - all top pent tris
@@ -187,6 +183,15 @@ Triangle Icosahedron::triangle(const int indx) {
   return Icosahedron::triangles()[indx];
 }
 
+Point3 Icosahedron::random_point() const {
+  // seed randomness
+  srand(time(NULL));
+  // random coords, (rand() / RAND_MAX) to get float values too
+  long double r_lat = ((double)rand() / RAND_MAX) * 180.0 - 90.0;
+  long double r_lon = ((double)rand() / RAND_MAX) * 360.0 - 180.0;
+  return this->point_from_coords(r_lat, r_lon);
+}
+
 Point3 Icosahedron::point_from_coords(double lat, double lon) const {
   if (!(lat <= 90 && lat >= -90)) {
     throw std::invalid_argument("lat must be between -90 and 90");
@@ -196,10 +201,10 @@ Point3 Icosahedron::point_from_coords(double lat, double lon) const {
   }
   lat = hexmapf::deg_2_rad(lat);
   lon = hexmapf::deg_2_rad(lon);
-  const double r = constants::radius;
-  const double x = r * cos(lat) * cos(lon);
-  const double y = r * cos(lat) * sin(lon);
-  const double z = r * sin(lat);
+  const long double r = constants::radius;
+  const long double x = r * cos(lat) * cos(lon);
+  const long double y = r * cos(lat) * sin(lon);
+  const long double z = r * sin(lat);
   return Point3(x, y, z);
 }
 
@@ -516,8 +521,8 @@ Phex Icosahedron::not_lazy_containing_phex(Point3 p, int res) const {
   const std::vector<Phex> phexes = Phex::all_phexes(all_points);
 
   std::unique_ptr<Phex> closest_phex;
-  double dist;
-  double smallest_dist = constants::radius * 2;
+  long double dist;
+  long double smallest_dist = constants::radius * 2;
   for (Phex phex : phexes) {
     dist = p.distance(phex.center);
     if (dist < smallest_dist) {
@@ -532,9 +537,19 @@ Phex Icosahedron::not_lazy_containing_phex(Point3 p, int res) const {
   return *closest_phex;
 }
 
+#include <emscripten/bind.h>
+
+std::string getExceptionMessage(intptr_t exceptionPtr) {
+  return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
+}
+
 EMSCRIPTEN_BINDINGS(icosahedron) {
+
+  emscripten::function("getExceptionMessage", &getExceptionMessage);
+
   emscripten::class_<Icosahedron>("Icosahedron")
       .constructor<ico::map_orientation, ico::rotation_method>()
+      .constructor<>()
       .function("pointFromCoords", &Icosahedron::point_from_coords)
       .function("hash", &Icosahedron::hash)
       .function("parseHash", &Icosahedron::parse_hash);
