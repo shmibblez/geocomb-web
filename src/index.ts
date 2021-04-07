@@ -1,4 +1,4 @@
-var M = require("../src/geocomb-web.js");
+var M = require("../lib/geocomb-web.js");
 
 /**
  * map orientation, changes where hexagons are placed

@@ -5,11 +5,11 @@ exported_functions=_embind_register_class_constructor
 debug_flags=-s NO_DISABLE_EXCEPTION_CATCHING -g -s ASSERTIONS=1
 
 all: icosahedron.o triangle.o phex.o point3.o
-	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o src/geocomb-web.js --no-entry -s WASM=0 -s
+	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o lib/geocomb-web.js --no-entry -s WASM=0 -s MODULARIZE=1
 	make clean
 
 debug: icosahedron.o triangle.o phex.o point3.o
-	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o src/geocomb-web.js --no-entry -s WASM=0 $(debug_flags)
+	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o lib/geocomb-web.js --no-entry -s WASM=0 -s MODULARIZE=1 $(debug_flags)
 	make clean
 
 icosahedron.o: src/cpp/enums.hpp src/cpp/point3.hpp src/cpp/triangle.hpp
