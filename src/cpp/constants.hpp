@@ -31,10 +31,6 @@ inline bool equal_enough(long double n1, long double n2, int places = 6) {
   long double right = round(n2 * mult);
   bool result = left == right;
 
-  printf("-c equal_nuff\n  n1: %f\n  n2: %f\n  left: %ld\n  right: %ld\n  "
-         "result: %d\n",
-         double(n1), double(n2), left, right, result);
-
   return result;
 }
 // rounds up to next multiple

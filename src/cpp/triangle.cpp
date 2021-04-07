@@ -132,9 +132,6 @@ Triangle::lazy_points_around_result
 Triangle::lazy_points_around(Point3 &p, int res,
                              ico::rotation_method rotation) const {
 
-  printf("-c lazy_points_around, point:\n  x: %f\n  y: %f\n  z: %f\n",
-         double(p.x), double(p.y), double(p.z));
-
   const int nd = hexmapf::num_divisions(res);
   // calc side percents
   const Triangle::calc_percent_result percents =
@@ -147,14 +144,6 @@ Triangle::lazy_points_around(Point3 &p, int res,
   //           << ", percent_CB: " << percents.percent_CB <<
   //           "\n";
 
-  printf("-c lazy_points_around, tri num: %i\n", this->num);
-
-  printf("-c lazy_points_around, percents:\n  percentCA: %f\n  percentCB: "
-         "%f\n "
-         " res: %i\n "
-         " nd: %i\n",
-         double(percents.percent_CA), double(percents.percent_CB), res, nd);
-
   // calculate percent of intersect component from C to A
   const int estimated_vert_center = this->direction == tri::pointing::UP
                                         ? round(nd - percents.percent_CA * nd)
@@ -166,9 +155,6 @@ Triangle::lazy_points_around(Point3 &p, int res,
           ? Point3::lazy_side_points_gnomonic(*this, estimated_vert_center, res)
           : Point3::lazy_side_points_quaternion(*this, estimated_vert_center,
                                                 res);
-
-  printf("-c lazy_points_around, side points L size: %i\n",
-         side_point_result.pointsL.size());
 
   std::vector<std::vector<Point3>> points;
 
@@ -191,14 +177,6 @@ Triangle::lazy_points_around(Point3 &p, int res,
                       ? side_point_result.lower_indx + i
                       : nd - (side_point_result.lower_indx + i);
 
-    // printf("-c lazy_points_around\n  left point:\n    x: %f\n    y: %f\n z: "
-    //        "%f\n  right point:\n    x: %f\n    y: %f\n    z: %f\n"
-    //        "  num_div: %d\n  side_point_result lower_indx: %i\n  res: %i\n i:
-    //        "
-    //        "%i\n",
-    //        left.x, left.y, left.z, right.x, right.y, right.z, num_div,
-    //        side_point_result.lower_indx, res, i);
-
     Point3::lazy_row_points_result row_points_result =
         rotation == ico::rotation_method::gnomonic
             ? Point3::lazy_row_points_gnomonic(estimated_horz_center, left,
@@ -212,11 +190,6 @@ Triangle::lazy_points_around(Point3 &p, int res,
     // better way to set lower_horz_bound? only need last value...
     lower_horz_bound = row_points_result.lower_indx;
   }
-
-  printf("-c lazy_points_around, point arr size: %d, nested vecs size:\n  0: "
-         "%d\n  1: %d\n  2: %d\n  3: %d\n  4: %d\n",
-         points.size(), points[0].size(), points[1].size(), points[2].size(),
-         points[3].size(), points[4].size());
 
   return {.points = points,
           .start_vert = side_point_result.lower_indx,
@@ -276,39 +249,23 @@ bool Triangle::contains_point(Point3 &point) const {
   }
   // calc tri area
   const long double tri_area = this->area();
-
-  printf("-c contains_point, this area: %f\n", double(tri_area));
-
   // if any sub tri area is bigger than thisArea it means point outside of
   // triangle
   const long double pAB_area = Triangle(this->A, this->B, intersection).area();
-
-  printf("  pAB_area: %f\n", double(pAB_area));
-
   if (pAB_area > tri_area + 0.01) {
     return false;
   }
   const long double pBC_area = Triangle(intersection, this->B, this->C).area();
-
-  printf("  pBC_area: %f\n", double(pBC_area));
-
   if (pBC_area > tri_area + 0.01) {
     return false;
   }
   const long double pCA_area = Triangle(this->A, intersection, this->C).area();
-
-  printf("  pCA_area: %f\n", double(pAB_area));
-
   if (pCA_area > tri_area + 0.01) {
     return false;
   }
   // round and check if equal enough
   const long double combined_area = pAB_area + pBC_area + pCA_area;
   const int equal_nuff = hexmapf::equal_enough(tri_area, combined_area);
-
-  printf("  combined_area: %f\n", double(combined_area));
-  printf("  this_area    : %f\n", double(tri_area));
-  printf("  equal_nuff: %i\n", equal_nuff);
 
   return equal_nuff;
 };

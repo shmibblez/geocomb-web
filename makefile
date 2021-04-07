@@ -5,7 +5,7 @@ exported_functions=_embind_register_class_constructor
 debug_flags=-s NO_DISABLE_EXCEPTION_CATCHING -g -s ASSERTIONS=1
 
 all: icosahedron.o triangle.o phex.o point3.o
-	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o src/geocomb-web.js --no-entry -s WASM=0
+	$(CC) --bind $(flags) icosahedron.o triangle.o phex.o point3.o -o src/geocomb-web.js --no-entry -s WASM=0 -s
 	make clean
 
 debug: icosahedron.o triangle.o phex.o point3.o

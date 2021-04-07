@@ -353,10 +353,6 @@ Point3::lazy_side_points_gnomonic(const Triangle &tri, const int center,
     upper = nd;
   }
 
-  printf("-c lazy_side_points_gnomonic\n  lower: %i\n  center: %i\n  "
-         "lazy_range: %i\n",
-         lower, center, lazy_range);
-
   const std::function generate_side_points =
       [&nd, &lower, &upper](const Point3 &top,
                             const Point3 &bot) -> std::vector<Point3> {

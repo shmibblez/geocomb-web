@@ -2,17 +2,26 @@
   "name": "geocomb-web",
   "version": "0.0.1-0.0.1",
   "description": "location storage with hexagons",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "directories": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "geocomb",
+    "geography",
     "hexagon",
     "location",
     "storage",
-    "phex"
+    "phex",
+    "geocomb"
   ],
   "author": "shmibblez",
-  "license": "ISC"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shmibblez/geocomb-web"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37"
+  }
 }
