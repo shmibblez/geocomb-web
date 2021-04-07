@@ -11,7 +11,7 @@ Based on some pretty nice relationships, hexagons/pentagons (phex, phexes) can b
 
 This means that geocomb can be used to store locations with hexagons, instead of traditional methods like geohashing which depend on rectangles. An other benefit is hexagons closely approximate circles, which can come in handy for findng locations within a certain distance from other locations (burger restaurants within 5 km or something like that)
 
-Aside from this, `emscript` is awesome, it allows easy binding of c++ code to javascript, and geocomb-web probably wouldn't exist without it. If you're planning on using it make sure to read the docs...let's just say it was a long day
+Aside from this, `emscripten` is awesome, it allows easy binding of c++ code to javascript, and geocomb-web probably wouldn't exist without it. If you're planning on using it make sure to read the docs...let's just say it was a long day
 
 ## install
 
