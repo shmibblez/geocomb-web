@@ -98,4 +98,4 @@ const parsedPoint = ico.parseHash(props);
 that's pretty much it for storing and recovering locations. The returned point, `parsedPoint`, is a phex center for the given resolution.
 
 # what's next?
-ok, now that we've got a native (c++) and web version of geocomb, now all that's left is to make a dart/flutter package that allows running this baby on all platforms. Will probably use dart::ffi for android & ios, and try to hook up to web somehow since it doesn't support dart::ffi yet. Coming soon to package managers near you...(most likely)
+ok, now that we've got a native (c++) and web version of geocomb, now all that's left is to make a dart/flutter package that allows running this baby on all platforms. Will probably use dart::ffi for android & ios, and try to hook up to web somehow since it doesn't support dart::ffi yet. This will probably be done soon...
