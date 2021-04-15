@@ -1,6 +1,6 @@
 {
   "name": "geocomb-web",
-  "version": "0.0.1-alpha.0.4",
+  "version": "0.0.1-alpha.0.5",
   "description": "location storage with hexagons",
   "main": "lib/index.js",
   "directories": {},
